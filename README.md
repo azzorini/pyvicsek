@@ -52,3 +52,30 @@ To see if all the birds are pointing to the same direction or if they are pointi
 $$
 v_a(t) = \frac{1}{N}\left| \sum_{j=1}^N e^{i\theta_j(t)} \right|
 $$
+
+The model now has already been explained let's jump to the coding part.
+
+## Python API
+
+There are two classes that we need to understand in order to work with this module: pyvicsek.Bird and pyvicsek.VicsekSimulation.
+
+### pyvicsek.Bird
+
+This class represents a single bird. It contains information about the bird's coordinates and also about the simulation that sets the bird parameters.
+
+The attributes of the Bird class are:
+
+1. **x**: Cartesian coordinate of the bird in the horizontal direction.
+2. **y**: Cartesian coordinate of the bird in the vertical direction.
+3. $\boldsymbol{\theta}$: Angle of the bird.
+4. **sim**: pyvicsek.VicsekSimulation object that contains all the simulation parameters. This attribute cannot be directly modified but when the bird is added to a simulation this parameter is changed. The coordinates of the birds are restricted to the interval $\left[0,\ L\right]$ where $L$ is defined in the VicsekSimulation object.
+
+There are two ways of creating a bird object:
+
+**Way 1 of constructing a Bird**
+
+```Python
+pyvicsek.Bird(x: float = 0, y: float = 0, theta: float = 0)
+```
+
+Sets a bird in the position $\left(x, y\right)$ and with angle theta.

@@ -19,7 +19,7 @@ PYBIND11_MODULE(pyvicsek, m) {
 		.def_property("x", &Bird::get_x, &Bird::set_x, "Cartesian coordinate of the bird in the horizontal direction.")
 		.def_property("y", &Bird::get_y, &Bird::set_y, "Cartesian coordinate of the bird in the vertical direction.")
 		.def_property("theta", &Bird::get_angle, &Bird::set_angle, "Angle of the bird.")
-		.def_property("sim", &Bird::get_sim_ptr, &Bird::set_sim, "Object that contains all the simulation parameters of the bird. Setting this parameter does not mean that the Bird is updated by the simulation but its coordinates will be forcefully at the interval [0, L] using periodic boundary conditions.")
+		.def_property_readonly("sim", &Bird::get_sim_ptr, "Object that contains all the simulation parameters of the bird. The bird coordinates will be forcefully at the interval [0, L].")
 		.def("__repr__",
 		     [](const Bird& b) {
 			     return '(' + std::to_string(b.get_x()) + ", " + std::to_string(b.get_y()) + ", " + std::to_string(b.get_angle()) + ')';
