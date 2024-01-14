@@ -45,7 +45,7 @@ PYBIND11_MODULE(pyvicsek, m) {
 		.def("push", py::overload_cast< const std::list< std::shared_ptr<Bird> >& >(&VicsekSimulation::push), "Adds a list of birds (or derived objects) to the simulation.", py::arg("birds"))
 		.def("randomize", &VicsekSimulation::randomize, "Sets all the coordinates of the birds to random values.")
 		.def("update", &VicsekSimulation::update, "Updates the simulation N_steps times and increases the time consequently. If no measures are going to be taken it is more efficient to give a higher value for N_steps.", py::arg("N_steps") = 1)
-		.def("compute_va", &VicsekSimulation::compute_va, "Computes the order parameter which is just the square modulus of the sum over birds of exp(iθ_j) where θ_j is the angle of each bird.")
+		.def("compute_va", &VicsekSimulation::compute_va, "Computes the order parameter which is just the modulus of the sum over birds of exp(iθ_j) where θ_j is the angle of each bird.")
 		.def("__repr__",
 		     [](const VicsekSimulation& sim) {
 		     return "<pyvicsek.VicsekSimulation with N=" + std::to_string(sim.get_N()) + ", L=" + std::to_string(sim.get_L()) + ", eta=" + std::to_string(sim.get_eta()) + '>';
