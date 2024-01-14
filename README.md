@@ -28,3 +28,7 @@ $$\boldsymbol{x}_i(t+1) = \boldsymbol{x}_i(t) + \boldsymbol{v}_i(t)\Delta t$$
 The velocity $\boldsymbol{v}_i$ of the bird is:
 
 $$\boldsymbol{v}_i = v\left[ \hat{\boldsymbol{x}}\cos\theta_i(t) + \hat{\boldsymbol{y}}\sin\theta_i(t)\right]$$
+
+Then the angle is also updated as follows:
+
+$$\theta_i(t+1) = \left\langle \theta(t) \right\rangle_r + \Delta\theta$$
