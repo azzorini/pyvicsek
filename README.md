@@ -32,3 +32,5 @@ $$\boldsymbol{v}_i = v\left[ \hat{\boldsymbol{x}}\cos\theta_i(t) + \hat{\boldsym
 Then the angle is also updated as follows:
 
 $$\theta_i(t+1) = \left\langle \theta(t) \right\rangle_r + \Delta\theta$$
+
+where $\Delta\theta$ is a random number in the interval $\left(-\eta / 2,\ \eta / 2\right)$ and $\left\langle \cdots \right\rangle$ denotes the average over the birds that are at a distance smaller than $r$.
