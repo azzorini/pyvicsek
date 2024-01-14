@@ -1,0 +1,24 @@
+# Ignore all
+*
+
+# Unignore files with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Unignore Makefile
+!Makefile
+
+# Unignore .gitignore
+!.gitignore
+
+# ignore object files
+*.o
+*.so
+
+# We ignore all the text files with are just results from the testing
+*.txt
+
+# We also ignore all the gifs which are also a testing result
+*.gif
