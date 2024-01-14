@@ -10,9 +10,6 @@
 # Unignore Makefile
 !Makefile
 
-# Unignore .gitignore
-!.gitignore
-
 # ignore object files
 *.o
 *.so
