@@ -50,7 +50,8 @@ public:
 	void set_angle(double angle) {
 		theta = std::fmod(angle, 2*std::numbers::pi);
 
-		if (theta < 0) theta += 2*std::numbers::pi;
+		if (theta < 0) theta += std::numbers::pi;
+		else theta -= std::numbers::pi;
 	}
 	void set_angle_new(double angle) {
 		theta_new = std::fmod(angle, 2*std::numbers::pi);
