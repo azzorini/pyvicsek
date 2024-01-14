@@ -21,7 +21,7 @@ Bird::Bird(VicsekSimulation* sim_ptr)
 : x_new(0), y_new(0), theta_new(0), sim(sim_ptr) {
 	const double L = sim->get_L();
 
-	theta = 2*std::numbers::pi*sim->get_ran_u();
+	theta = 2*std::numbers::pi*(sim->get_ran_u() - 0.5);
 
 	x = L*sim->get_ran_u();
 	y = L*sim->get_ran_u();
@@ -112,7 +112,7 @@ void Bird::randomize() {
 
 	x = L*sim->get_ran_u();
 	y = L*sim->get_ran_u();
-	theta = 2*std::numbers::pi*sim->get_ran_theta();
+	theta = 2*std::numbers::pi*(sim->get_ran_u() - 0.5);
 
 	i = (unsigned) x;
 	j = (unsigned) y;

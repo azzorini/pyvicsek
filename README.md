@@ -79,3 +79,25 @@ pyvicsek.Bird(x: float = 0, y: float = 0, theta: float = 0)
 ```
 
 Sets a bird in the position $\left(x, y\right)$ and with angle theta.
+
+**Way 2 of constructing a Bird**
+
+```Python
+pyvicsek.Bird(sim: pyvicsek.VicsekSimulation)
+```
+
+Sets the attribute sim of the Bird, sets the coordinate at some random value in the interval $\left[0, L\right]$ where $L$ is taken from the sim parameter and sets the angle at a random value.
+
+The representation of the bird is given by: (x, y, theta). Example:
+
+```Python
+import pyvicsek as vi
+
+b = vi.Bird(2, 3, 1.5)
+
+print(b) # -> It will show (2.000000, 3.000000, 1.500000)
+
+b.x += 2.5
+
+print(b) # -> It will show (4.500000, 3.000000, 1.500000)
+```
