@@ -23,4 +23,4 @@ We will be able to define and modify all the explained parameters.
 
 Now let's briefly described the mathematical part of the model. At every time step we update the bird $i$ using the following equation:
 
-$$\mathbold{x}_i(t+1) = \mathbold{x}_i(t) + \mathbold{v}_i(t)\Delta t$$
+$$\boldsymbol{x}_i(t+1) = \boldsymbol{x}_i(t) + \boldsymbol{v}_i(t)\Delta t$$
