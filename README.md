@@ -17,7 +17,7 @@ So in the model we will have $N$ birds. These birds will move in a box of length
 
 A sketch of how a simulation looks is shown in the following image:
 
-![Vicsek model sketch](https://github.com/azzorini/pyvicsek/blob/main/img/VicsekModelSketch.png)
+![Vicsek model sketch](https://github.com/azzorini/pyvicsek/blob/main/img/VicsekModelSketch.png?raw=true)
 
 We will be able to define and modify all the explained parameters.
 
