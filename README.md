@@ -146,7 +146,7 @@ The pyvicsek.VicsekSimulation class has the following methods:
 pyvicsek.VicsekSimulation.update(self: pyvicsek.VicsekSimulation, N_steps: int = 1)
 ```
 
-Updates the position of the birds N_steps times. The time attribute will be increased by N_steps. The data about the simulation is not saved until the last step is finished, as a result, it is more efficient to call this method one time with the desired number of steps instead of calling it several times. The general strategy should be: simulation.update(SomeSteps) &rarr Do measures &rarr simulation.update(SomeSteps) &rarr Do measures again &rarr ...
+Updates the position of the birds N_steps times. The time attribute will be increased by N_steps. The data about the simulation is not saved until the last step is finished, as a result, it is more efficient to call this method one time with the desired number of steps instead of calling it several times. The general strategy should be: simulation.update(SomeSteps) :arrow_right: Do measures :arrow_right: simulation.update(SomeSteps) :arrow_right: Do measures again :arrow_right: ...
 
 ```Python
 pyvicsek.VicsekSimulation.set_v(self: pyvicsek.VicsekSimulation, v: float)
