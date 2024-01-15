@@ -75,7 +75,7 @@ There are two ways of creating a bird object:
 **Way 1 of constructing a Bird**
 
 ```Python
-pyvicsek.Bird(x: float = 0, y: float = 0, theta: float = 0)
+pyvicsek.Bird(self: pyvicsek.Bird, x: float = 0, y: float = 0, theta: float = 0)
 ```
 
 Sets a bird in the position $\left(x, y\right)$ and with angle theta.
@@ -83,7 +83,7 @@ Sets a bird in the position $\left(x, y\right)$ and with angle theta.
 **Way 2 of constructing a Bird**
 
 ```Python
-pyvicsek.Bird(sim: pyvicsek.VicsekSimulation)
+pyvicsek.Bird(self: pyvicsek.Bird, sim: pyvicsek.VicsekSimulation)
 ```
 
 Sets the attribute sim of the Bird, sets the coordinate at some random value in the interval $\left[0, L\right]$ where $L$ is taken from the sim parameter and sets the angle at a random value.
@@ -125,7 +125,7 @@ There are two possible constructors for this class.
 **Constructor that receives the number of birds**:
 
 ```Python
-pyvicsek.VicsekSimulation(N: int, v: float = 0.03, eta: float = 2.0, L: float = 7.0, seed: int = 0)
+pyvicsek.VicsekSimulation(self: pyvicsek.VicsekSimulation, N: int, v: float = 0.03, eta: float = 2.0, L: float = 7.0, seed: int = 0)
 ```
 
 N is the number of birds that we want to simulate. These birds will be created from the Bird base class with random coordinates. Then v is the speed of the birds, eta is the angluar noise in the copying mechanism, L is the box length and seed is a seed use for the random number generation. By defualt seed is set to 0 so if you run the exact same simulation twice the results will be the same.
@@ -133,7 +133,29 @@ N is the number of birds that we want to simulate. These birds will be created f
 **Constructor that receives a list of birds:**
 
 ```Python
-pyvicsek.VicsekSimulation(birds: List[pyvicsek.Bird], v: float = 0.03, eta: float = 2.0, L: float = 7.0, seed: int = 0)
+pyvicsek.VicsekSimulation(self: pyvicsek.VicsekSimulation, birds: List[pyvicsek.Bird], v: float = 0.03, eta: float = 2.0, L: float = 7.0, seed: int = 0)
 ```
 
 All the optional parameters are the same ones but now instead of giving a number of birds we have to give a list with all the birds that can also be objects derived from the base class Bird. The parameters of the birds will be the ones from the last simulation in which they are included. This means that it is allow to first add a bird to a simulation sim1 and then add it to the simulation sim2. But then trying to update sim1 can lead to wrong results and even crash the simulation.
+
+#### Methods
+
+The pyvicsek.VicsekSimulation class has the following methods:
+
+```Python
+pyvicsek.VicsekSimulation.update(self: pyvicsek.VicsekSimulation, N_steps: int = 1)
+```
+
+Updates the position of the birds N_steps times. The time attribute will be increased by N_steps. The data about the simulation is not saved until the last step is finished, as a result, it is more efficient to call this method one time with the desired number of steps instead of calling it several times. The general strategy should be: simulation.update(SomeSteps) &rarr Do measures &rarr simulation.update(SomeSteps) &rarr Do measures again &rarr ...
+
+```Python
+pyvicsek.VicsekSimulation.set_v(self: pyvicsek.VicsekSimulation, v: float)
+```
+
+This method modifies the v attribute and, as a result, sets the speed of all the birds in the simulation
+
+```Python
+pyvicsek.VicsekSimulation.set_eta(self: pyvicsek.VicsekSimulation, eta: float)
+```
+
+This method modifies the eta attribute thus changing the angular noise of the copying mechanism.
