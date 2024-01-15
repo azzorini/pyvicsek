@@ -101,3 +101,17 @@ b.x += 2.5
 
 print(b) # -> It will show (4.500000, 3.000000, 1.500000)
 ```
+
+### pyvicsek.VicsekSimulation
+
+This class is the key one for the simulations. It contains all the information needed to run a simulation. Internally it stores a list of Bird objects that are used to run the simulation. It also stores all the simulation parameters. In order to optimize the simulation a link list is created, this list plus some information about the neighbours of each cell in the link list is also stored in this class.
+
+All the attributes except for the simulation time are readonly since changing them will change the simulation completely. However if you really want to change the parameters you can use the setters. The accesible attributes of this class are:
+
+1. **t**: Time of the simulation. It is automatically increased when we call the method ``VicsekSimulation.update``. It does not affect the simulation and can be set freely.
+2. **N**: Number of birds of the simulation. It can be modified using ``VicsekSimulation.set_N`` and ``VicsekSimulation.push``.
+3. **L**: Length of the box in which the simulation takes place. For some simulations the density of birds may be an important factor. Even though the density is not an attribute and cannot be set keep in mind that it is just $\rho = N/L^2$. The length can only be modified using ``VicsekSimulation.set_L``.
+4. **exact_cells**: Boolean variable indicating if the length is an exact number of the radius of vision of the bird (so basically if the length is an integer). It is modified when using ``VicsekSimulation.set_L``. The simulation will run faster if this attribute is ``True``, so it is always nice to check.
+5. **eta**: Angular noise of the copying mechanism. It can only be modified via ``VicsekSimulation.set_eta``.
+6. **v**: Speed of the birds, it can be modified using ``VicsekSimulation.set_v``.
+7. **x**, **y**, **theta**: These are numpy arrays containing all the coordinates and angles of the Birds in the simulation. They are readonly and the data is stored in C++ and accesed directly from Python. As a result no copy of the data from C++ to Python is required.
