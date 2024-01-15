@@ -159,3 +159,34 @@ pyvicsek.VicsekSimulation.set_eta(self: pyvicsek.VicsekSimulation, eta: float)
 ```
 
 This method modifies the eta attribute thus changing the angular noise of the copying mechanism.
+
+```Python
+pyvicsek.VicsekSimulation.set_L(self: pyvicsek.VicsekSimulation, L: float)
+```
+
+This method sets the length of the box in which the simulation takes place. If some birds are as a result out of bounds they will be moved to fit into the new box. This method also modifies the exact_cells attribute. As mentioned before this attribute will be true if L is an integer and in that case the simulation will run faster.
+
+```Python
+pyvicsek.VicsekSimulation.set_N(self: pyvicsek.VicsekSimulation, N: int)
+```
+
+Sets the number of birds of the simulation. If the new number is bigger more objects of the Bird class will be created with random coordinates, otherwise the list of birds in the simulation will just shrink.
+
+```Python
+pyvicsek.VicsekSimulation.push(self: pyvicek.VicsekSimulation, birds: pyvicsek.Bird)
+pyvicsek.VicsekSimulation.push(self: pyvicek.VicsekSimulation, birds: List[pyvicsek.Bird])
+```
+
+This is an overloaded method. It allows you to add a single bird (or derived object) to the simulation or a whole list of birds. The number of birds will grow as a consequence. As it has been already mentioned the same bird object should not belong to more than one simulation in progress. If this happens the results will be wrong and the simulation can even crash.
+
+```Python
+pyvicsek.VicsekSimulation.randomize(self: pyvicek.VicsekSimulation)
+```
+
+Set all the birds to random positions and set all their directions to random angles.
+
+```Python
+pyvicsek.VicsekSimulation.compute_va(self: pyvicek.VicsekSimulation) -> float
+```
+
+Computes the order parameter of the simulation. The definition of this parameter has already been explained in the part about the Vicsek model, but this parameter will be 0 if all the directions are completely random and 1 if all the directions are the same.
