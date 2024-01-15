@@ -129,3 +129,11 @@ pyvicsek.VicsekSimulation(N: int, v: float = 0.03, eta: float = 2.0, L: float = 
 ```
 
 N is the number of birds that we want to simulate. These birds will be created from the Bird base class with random coordinates. Then v is the speed of the birds, eta is the angluar noise in the copying mechanism, L is the box length and seed is a seed use for the random number generation. By defualt seed is set to 0 so if you run the exact same simulation twice the results will be the same.
+
+**Constructor that receives a list of birds:**
+
+```Python
+pyvicsek.VicsekSimulation(birds: List[pyvicsek.Bird], v: float = 0.03, eta: float = 2.0, L: float = 7.0, seed: int = 0)
+```
+
+All the optional parameters are the same ones but now instead of giving a number of birds we have to give a list with all the birds that can also be objects derived from the base class Bird. The parameters of the birds will be the ones from the last simulation in which they are included. This means that it is allow to first add a bird to a simulation sim1 and then add it to the simulation sim2. But then trying to update sim1 can lead to wrong results and even crash the simulation.
