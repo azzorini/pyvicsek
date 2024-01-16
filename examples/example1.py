@@ -5,7 +5,7 @@ import pyvicsek as vi
 # We define the simulation parameters
 
 N_steps = 5 # Number of steps per measure
-N_it = 400 # Number of measeures
+N_it = 400 # Number of measures
 
 N_birds = 300 # Number of birds
 length = 7 # Length of the box
