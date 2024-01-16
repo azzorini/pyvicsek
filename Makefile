@@ -17,6 +17,7 @@ test: test_vicsek.cpp vicsek.o get_test_gif.py
 
 pyvicsek: pyvicsek.cpp vicsek.o
 	$(CC) $(CFLAGS) $(CFLAGSPY) pyvicsek.cpp vicsek.o -o $(OUTPUT)
+	cp $(OUTPUT) examples/$(OUTPUT)
 
 clear:
-	rm vicsek.o test_vicsek $(OUTPUT) birds_*_test.* va_*_test.txt
+	rm vicsek.o test_vicsek $(OUTPUT) examples/$(OUTPUT) birds_*_test.* va_*_test.txt
