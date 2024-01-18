@@ -34,6 +34,8 @@ PYBIND11_MODULE(pyvicsekvision, m) {
 		.def_property("y", &BirdVision::get_y, &BirdVision::set_y, "Cartesian coordinate of the bird in the vertical direction.")
 		.def_property("theta", &BirdVision::get_angle, &BirdVision::set_angle, "Angle of the bird.")
 		.def_property_readonly("sim", &BirdVision::get_sim_ptr, "Object that contains all the simulation parameters of the bird. The bird coordinates will be forcefully at the interval [0, L].")
+		.def_property_readonly("view_width", &BirdVision::get_width_view, "Return the width of the field of view of the bird. This parameter can be modified using BirdVision.set_view_width.")
+		.def("set_view_width", &BirdVision::set_width_view, "Sets the width of view of the bird.")
 		.def("__repr__",
 		     [](const BirdVision& b) {
 			     return '(' + std::to_string(b.get_x()) + ", " + std::to_string(b.get_y()) + ", " + std::to_string(b.get_angle()) + ')';

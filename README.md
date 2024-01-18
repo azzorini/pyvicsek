@@ -221,3 +221,42 @@ with open("example_va.txt", "w") as f:
         sim.update(N_steps) # We update the simulation
         f.write(f"{sim.t}\t{sim.compute_va()}\n") # We write the current order parameter
 ```
+
+## Defining new bird behaviour
+
+This module is created in such a way that adding a new type of bird with different behaviour is more or less easy. A full example is shown in the directory *derived_bird_example*. Let's explain a little bit this example.
+
+The goal is to create a new kind of bird that can only copy other birds if they are at a distance smaller than its vision radius ($r=1$) **and** they are inside of the field of view. The width of the field of view will be a new parameter that we need to specify.
+
+In order to create this new bird and bring it to live in Python we need to basically perform two steps. First of all we will create a new C++ class that inherits from the Bird class. The header for this new class could be defined as follows:
+
+```C++
+#pragma once
+
+#include <cmath>
+#include <list>
+#include <numbers>
+#include <memory>
+
+#include "vicsek.hpp"
+
+// We create a new class the inherits from Bird
+class BirdVision : public Bird {
+	double ang_field_view; // Field of view angle in radians
+protected:
+	void sum_birds_in_view(const std::list< std::shared_ptr<Bird> >&, double&, double&) const;
+public:
+	BirdVision(double FieldOfView = std::numbers::pi/3, double x = 0, double y = 0, double theta = 0)
+	: Bird(x, y, theta), ang_field_view(FieldOfView) {}
+	BirdVision(VicsekSimulation* sim, double FieldOfView = std::numbers::pi/3)
+	: Bird(sim), ang_field_view(FieldOfView) {}
+
+	virtual ~BirdVision() = default;
+
+	// Gets the angle between this bird and the bird given by the pointer
+	double get_angle_to(const std::shared_ptr<Bird>&) const;
+
+	// Overwrite the average angle function
+	virtual double average_angle(const std::vector< std::vector<unsigned> >&, const std::vector< std::list< std::shared_ptr<Bird> > >&) const;
+};
+```

@@ -20,6 +20,10 @@ public:
 
 	virtual ~BirdVision() = default;
 
+	void set_width_view(double ViewWidth) { ang_field_view = ViewWidth; }
+
+	double get_width_view() const { return ang_field_view; }
+
 	// Gets the angle between this bird and the bird given by the pointer
 	double get_angle_to(const std::shared_ptr<Bird>&) const;
 
