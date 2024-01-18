@@ -243,7 +243,7 @@ In order to create this new bird and bring it to live in Python we need to basic
 
 #include "vicsek.hpp"
 
-// We create a new class the inherits from Bird
+// We create a new class that inherits from Bird
 class BirdVision : public Bird {
 	double ang_field_view; // Field of view angle in radians
 protected:
