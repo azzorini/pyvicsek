@@ -231,9 +231,12 @@ The goal is to create a new kind of bird that can only copy other birds if they 
 In order to create this new bird and bring it to live in Python we need to basically perform two steps. First of all we will create a new C++ class that inherits from the Bird class. The header for this new class could be defined as follows:
 
 ```C++
+/** vicsek_vision.hpp **/
+
 #pragma once
 
 #include <cmath>
+#include <vector>
 #include <list>
 #include <numbers>
 #include <memory>
@@ -253,10 +256,92 @@ public:
 
 	virtual ~BirdVision() = default;
 
+	void set_width_view(double ViewWidth) { ang_field_view = ViewWidth; }
+
+	double get_width_view() const { return ang_field_view; }
+
 	// Gets the angle between this bird and the bird given by the pointer
 	double get_angle_to(const std::shared_ptr<Bird>&) const;
 
-	// Overwrite the average angle function
+	// Override the average angle function
 	virtual double average_angle(const std::vector< std::vector<unsigned> >&, const std::vector< std::list< std::shared_ptr<Bird> > >&) const;
 };
 ```
+
+In the above header file there are two key implementation features that we will always need in order to create a new kind of bird.
+
+The first thing that we have to do is include the library in which the base Bird class is. Then we need to create a new DerivedBird class that inherits from Bird in public mode:
+
+```C++
+#include "vicsek.hpp"
+
+class DerivedBird : public Bird { /*...*/ };
+```
+
+Of course after creating this class we have a couple of formal requisites: Having at least one constructor, the constructor typically relies on one of the constructors for the Bird class and having a virtual destructor.
+
+Then, the second thing that we need to do is to override a virtual method from the Bird class. Typically the most common thing to do will be to override the method that computes the average angle that a Bird sees:
+
+```C++
+virtual double average_angle(const std::vector< std::vector<unsigned> >& neighbours, const std::vector< std::list< std::shared_ptr<Bird> > >& bird_linklist) const;
+```
+
+The neighbours vector (first argument) gives as the neighbours of each cell. The bird_linklist vector (second argument) gives us pointer to each bird in any given cell. However it is also possible to override the following method:
+
+```C++
+virtual void update_to_new(const std::vector< std::vector<unsigned> >& neighbours, const std::vector< std::list< std::shared_ptr<Bird> > >& bird_linklist);
+```
+
+The arguments are again the same ones as before. But this function just save the results of updating the coordinates of the bird in some different attributes. So here you can redefine how the coordinates are updated. Even though if you change this probably the simulations will not really be from the Vicsek model.
+
+The implementation for the header that he have shown in the above example can be found in *derived_bird_example/vicsek_vision.cpp*.
+
+Then the last thing that we need to do is to add the bindings to use this new class in Python. This is done in the file *derived_bird_example/pyvicsekvision.cpp*. This file is a modification of the original file *pyvicsek.cpp* in which we have added the following lines:
+
+```C++
+/** pyvicsekvision.cpp **/
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/eigen.h>
+
+#include <string>
+#include <list>
+#include <memory>
+
+#include "vicsek.hpp"
+#include "vicsek_vision.hpp" // We add the library with the new Bird definition
+
+namespace py = pybind11;
+
+PYBIND11_MODULE(pyvicsekvision, m) {
+	// Bindings for the Bird class
+
+	py::class_< BirdVision, Bird, std::shared_ptr<BirdVision> >(m, "BirdVision")
+		.def(py::init<double, double, double, double>(), "Creates a bird with a field of view width given by WidthView and the given coordinates (x, y, theta). Where (x, y) are the cartesian coordinates and theta is the bird's angle.", py::arg("WidthView") = std::numbers::pi/3, py::arg("x") = 0, py::arg("y") = 0, py::arg("theta") = 0)
+		.def(py::init<VicsekSimulation*, double>(), "Creates a bird with a field of view width given by WidthView, random angle and random coordinates randomly distributed in the interval [0, L), where L is the length of the VicsekSimulation passed to the constructor.\n\nWarning: The constructor does not add the Bird to the simulation if you want to do that you will need to use the method VicsekSimulation.push.", py::arg("sim"), py::arg("WidthView") = std::numbers::pi/3)
+		.def_property("x", &BirdVision::get_x, &BirdVision::set_x, "Cartesian coordinate of the bird in the horizontal direction.")
+		.def_property("y", &BirdVision::get_y, &BirdVision::set_y, "Cartesian coordinate of the bird in the vertical direction.")
+		.def_property("theta", &BirdVision::get_angle, &BirdVision::set_angle, "Angle of the bird.")
+		.def_property_readonly("sim", &BirdVision::get_sim_ptr, "Object that contains all the simulation parameters of the bird. The bird coordinates will be forcefully at the interval [0, L].")
+		.def_property_readonly("view_width", &BirdVision::get_width_view, "Return the width of the field of view of the bird. This parameter can be modified using BirdVision.set_view_width.")
+		.def("set_view_width", &BirdVision::set_width_view, "Sets the width of view of the bird.")
+		.def("__repr__",
+		     [](const BirdVision& b) {
+			     return '(' + std::to_string(b.get_x()) + ", " + std::to_string(b.get_y()) + ", " + std::to_string(b.get_angle()) + ')';
+		     }, "String representation of a bird: (x, y, θ).");
+
+	// Bindings for the VicsekSimulation class
+}
+```
+
+The full file is located in *derived_bird_example/pyvicsekvision.cpp*. But simply we are adding the required bindings for the BirdVision class that we have already defined before. let's break a little bit the main parts of it.
+
+The first line is declaring the binding for the new class in Python:
+
+```C++
+py::class_< BirdVision, Bird, std::shared_ptr<BirdVision> >(m, "BirdVision")
+```
+
+In this line we are indicating that we are going to create a binding for the C++ class BirdVision. Then we are also explicitly saying that this class inherits from the class Bird and we are saying that the placeholder for this class is a ``std::shared_ptr<BirdVision>``. These last two things are needed because the class VicsekSimulation receives ``std::shared_ptr<Bird>`` as an argument for several methods, after indicating all of this the binding for the VicsekSimulation class should also be able to receive BirdVision objects.
+
+Then the rest of the code is almost the same bindings that we had for the Bird class. The only things that changes are the constructors (the first two definitions that start with ``.def(py::init</*...*/>(), /*...*/)``). Now we have to do bindings for the new constructors of the BirdVision class that also take into consideration the width of the field of view of the bird. Then the only thing that is added is a way to acces and chnage the current value for the width of the field of view of the bird.

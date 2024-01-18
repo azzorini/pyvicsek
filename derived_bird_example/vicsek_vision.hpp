@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 #include <list>
 #include <numbers>
 #include <memory>
@@ -27,6 +28,6 @@ public:
 	// Gets the angle between this bird and the bird given by the pointer
 	double get_angle_to(const std::shared_ptr<Bird>&) const;
 
-	// Overwrite the average angle function
+	// Override the average angle function
 	virtual double average_angle(const std::vector< std::vector<unsigned> >&, const std::vector< std::list< std::shared_ptr<Bird> > >&) const;
 };
